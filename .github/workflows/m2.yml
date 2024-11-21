@@ -1,4 +1,4 @@
-name: Deploy Maven artifacts
+name: Deploy Maven artifacts to m2 branch
 on: push
 
 permissions:
