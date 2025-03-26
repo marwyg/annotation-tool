@@ -3,7 +3,7 @@
   <groupId>org.opencast.annotate</groupId>
   <artifactId>annotation-tool-impl</artifactId>
   <versioning>
-    <release>2025.0326.082325-a26b80ec314c03fdc41f332326e897316aaa9ad8</release>
+    <release>2025.0326.095150-7b1b98e10b6f450e73b5655c86789c8b7b18761a</release>
     <versions>
       <version>2020.1015.145954-041d93419136f64dffa8123372fbb902fc02b470</version>
       <version>2020.1201.162152-242846e0d09c4ce12cd6e62b880c413c701f0b5f</version>
@@ -31,7 +31,8 @@
       <version>2025.0124.141014-217e928eacc5c692160a63e416a951c64c9bc463</version>
       <version>2025.0124.144346-cc1262e0826d05ad252a9bb1d594e9fa7487752b</version>
       <version>2025.0326.082325-a26b80ec314c03fdc41f332326e897316aaa9ad8</version>
+      <version>2025.0326.095150-7b1b98e10b6f450e73b5655c86789c8b7b18761a</version>
     </versions>
-    <lastUpdated>20250326082326</lastUpdated>
+    <lastUpdated>20250326095151</lastUpdated>
   </versioning>
 </metadata>
