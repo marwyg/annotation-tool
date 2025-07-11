@@ -8,7 +8,10 @@ fi
 
 RELEASE="$1"
 
-# Install required tools if they are missing
+# List of artifact IDs to install (no .jar extension)
+TARGET_JARS=("opencast-common" "opencast-util" "opencast-service")
+
+# Install required tools if missing
 for tool in curl jq rsync; do
   if ! command -v $tool &>/dev/null; then
     echo "$tool not found. Installing..."
@@ -38,22 +41,25 @@ tar xzf "$TARBALL"
 mkdir -p ~/.m2/repository/org/opencastproject
 rsync -a ./opencast-dist-allinone/system/org/opencastproject/ ~/.m2/repository/org/opencastproject/
 
-# Dynamically install all .jar files in the distribution
-find ./opencast-dist-allinone/system/org/opencastproject/ -name "*.jar" | while read jar; do
-  relpath=${jar#./opencast-dist-allinone/system/}
-  groupId=$(dirname "$relpath" | tr '/' '.')
-  artifactId=$(basename "$(dirname "$relpath")")
-  version=$(basename "$relpath" | sed -E "s/.*-([0-9]+\.[0-9]+)\.jar/\1/")
+# Install specific jars only
+for jar in $(find ./opencast-dist-allinone/system/org/opencastproject/ -name "*.jar"); do
+  artifactId=$(basename "$(dirname "$jar")")
 
-  echo "📦 Installing $groupId:$artifactId:$version"
-  mvn install:install-file \
-    -Dfile="$jar" \
-    -DgroupId="$groupId" \
-    -DartifactId="$artifactId" \
-    -Dversion="$RELEASE" \
-    -Dpackaging=jar \
-    -DgeneratePom=true \
-    -q
+  # Check if this artifactId is in the target list
+  if [[ " ${TARGET_JARS[@]} " =~ " ${artifactId} " ]]; then
+    relpath=${jar#./opencast-dist-allinone/system/}
+    groupId=$(dirname "$relpath" | tr '/' '.')
+
+    echo "📦 Installing $groupId:$artifactId:$RELEASE"
+    mvn install:install-file \
+      -Dfile="$jar" \
+      -DgroupId="$groupId" \
+      -DartifactId="$artifactId" \
+      -Dversion="$RELEASE" \
+      -Dpackaging=jar \
+      -DgeneratePom=true \
+      -q
+  fi
 done
 
 # Clean up
