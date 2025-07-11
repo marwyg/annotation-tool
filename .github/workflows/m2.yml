@@ -40,6 +40,11 @@ jobs:
           ref: m2
           path: m2
 
+      - name: Run pre-build script to fix dependency issue
+        run: |
+          chmod +x .github/scripts/download-release
+          .github/scripts/download-release 17.0
+
       - name: Generate revision
         id: revision
         run: echo "revision=$(date +%Y.%m%d.%H%M%S)-${{ github.sha }}" >> $GITHUB_OUTPUT
