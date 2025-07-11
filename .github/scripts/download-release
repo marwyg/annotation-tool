@@ -23,6 +23,7 @@ do
   echo "Downloading $url"
   curl -LO $url
   tar xzf `basename $url`
+  mkdir -p ~/.m2/repository/org/opencastproject
   rsync -a ./opencast-dist-allinone/system/org/opencastproject/ ~/.m2/repository/org/opencastproject/
   rm -rf opencast-dist-allinone*
 done
