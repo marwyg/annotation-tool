@@ -9,7 +9,8 @@ fi
 RELEASE="$1"
 
 # Install required tools if missing
-apt-get update && apt-get install -y curl jq rsync openjdk-17-jdk ffmpeg maven python3 unzip g++ tar bzip2 git
+sudo apt-get update
+sudo apt-get install -y curl maven jq rsync openjdk-17-jdk ffmpeg maven python3 unzip g++ tar bzip2 git || { echo "❌ installing dependencies failed"; exit1; }
 
 # Clone Opencast with the specified release tag
 echo "🛠️ Cloning Opencast release $RELEASE"
@@ -18,7 +19,7 @@ git clone --branch "$RELEASE" --single-branch --depth 1 https://github.com/openc
 # Build and install into ~/.m2
 cd opencast
 echo "🚀 Building Opencast and installing artifacts into ~/.m2"
-mvn clean install -Pdev -DskipTests -T 1C || { echo "❌ Build failed"; exit 1; }
+mvn clean install -Pdev -DskipTests || { echo "❌ Build failed"; exit 1; }
 cd ..
 
 # Clean up

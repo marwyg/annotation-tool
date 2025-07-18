@@ -40,6 +40,10 @@ jobs:
           ref: m2
           path: m2
 
+      - name: Clean corrupted Node.js archive if exists
+        run: |
+          rm -f $HOME/.m2/repository/com/github/eirslett/node/20.12.2/node-20.12.2-linux-x64.tar.gz
+
       - name: Run pre-build script to fix dependency issue
         run: |
           chmod +x .github/scripts/download-release
