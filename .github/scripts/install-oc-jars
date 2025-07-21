@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]; then
+  echo "Usage: $0 release"
+  echo " eg: $0 17.5 -> clones the 17.5 tag of Opencast and installs its jars into your ~/.m2 repository"
+  exit 1
+fi
+
+RELEASE="$1"
+
+# Install required tools if missing
+sudo apt-get update
+sudo apt-get install -y curl maven jq rsync openjdk-17-jdk ffmpeg maven python3 unzip g++ tar bzip2 git || { echo "❌ installing dependencies failed"; exit1; }
+
+# Clone Opencast with the specified release tag
+echo "🛠️ Cloning Opencast release $RELEASE"
+git clone --branch "$RELEASE" --single-branch --depth 1 https://github.com/opencast/opencast.git || { echo "❌ Git clone failed"; exit 1; }
+
+# Build and install into ~/.m2
+cd opencast
+echo "🚀 Building Opencast and installing artifacts into ~/.m2"
+mvn clean install -Pdev -DskipTests || { echo "❌ Build failed"; exit 1; }
+cd ..
+
+# Clean up
+rm -rf opencast
+echo "✅ Done: Opencast $RELEASE installed to local Maven repository"

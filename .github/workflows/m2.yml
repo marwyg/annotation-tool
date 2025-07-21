@@ -16,29 +16,19 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: zulu
-          java-version: 11
+          java-version: 17
           cache: maven
-
-      - name: Potentially restore node from cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            frontend/node
-          key: node-${{ hashFiles('frontend/pom.xml') }}
-          restore-keys: node-
-
-      - name: Potentially restore npm dependencies from cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: npm-
 
       - name: Check out the m2 repository
         uses: actions/checkout@v4
         with:
           ref: m2
           path: m2
+
+      - name: Install OC jars in m2 repo by downloading and installing it
+        run: |
+          chmod +x .github/scripts/install-oc-jars
+          .github/scripts/install-oc-jars 17.0
 
       - name: Generate revision
         id: revision
