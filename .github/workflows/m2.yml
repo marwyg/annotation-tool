@@ -28,7 +28,7 @@ jobs:
       - name: Run pre-build script to fix dependency issue
         run: |
           chmod +x .github/scripts/download-release
-          .github/scripts/download-release 17.0
+          .github/scripts/install-oc-jars 17.0
 
       - name: Generate revision
         id: revision
